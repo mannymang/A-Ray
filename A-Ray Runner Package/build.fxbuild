@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ASCII"?>
+<anttasks:AntTask xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:anttasks="http://org.eclipse.fx.ide.jdt/1.0" buildDirectory="${project}/build">
+  <deploy height="550" placeholderref="application" placeholderid="application" width="490">
+    <application name="A-Ray Runner Package" mainclass="application.Main" version="1.0"/>
+    <info title="A-Ray Interpreter" vendor="Manny Meng"/>
+  </deploy>
+  <signjar alias="signfiles" keypass="ZM20020617" keystore="F:\Files\Programming\Java\workspace4.5\A-Ray Runner Package\a_ray.jks" storepass="ZM20020617"/>
+</anttasks:AntTask>
