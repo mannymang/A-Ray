@@ -10,15 +10,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-public class A_RayCode { // TODO error and update github
-
-	public static void main(String[] args) {
-		A_RayCode code = new A_RayCode(
-				"TIEipM:et",
-				new File("z"));
-		System.out.println(code.runAndGetOutput());
-	}
-	// TIEif{?=t0{b}?=-le1x{f{?=t0{b} Ge+-lex1\"\0\"T-t1}b} ?<gexge+x1{Gex\"\0\"T-t1} }pe
+public class A_RayCode {
 
 	public static final String FILENAME_EXTENSTION = ".br";
 

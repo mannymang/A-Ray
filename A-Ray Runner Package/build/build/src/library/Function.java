@@ -62,6 +62,15 @@ public final class Function<T> {
 		}
 		switch (type) {
 		case ARRAY:
+			List<ArrayItem> array = (List<ArrayItem>) object;
+			Object value = array.get(0).getValue();
+			if (Type.CHARACTER.isMatch(value) || Type.STRING.isMatch(value)) {
+				StringBuilder result = new StringBuilder();
+				for (ArrayItem item : array) {
+					result.append(item);
+				}
+				return result.toString();
+			}
 			return ((List<ArrayItem>) object).toString();
 		case BOOLEAN:
 			return Boolean.toString((boolean) object);
