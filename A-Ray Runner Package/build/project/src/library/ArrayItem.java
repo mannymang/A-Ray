@@ -25,6 +25,11 @@ public class ArrayItem implements Comparable<ArrayItem> {
 	public void setValue(Object value) {
 		this.value = value;
 	}
+	
+	@Override
+	public String toString() {
+		return value.toString();
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override

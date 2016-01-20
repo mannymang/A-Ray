@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-public class A_RayCode {
+public class A_RayCode { // TODO error and update github
 
 	public static void main(String[] args) {
 		A_RayCode code = new A_RayCode(
@@ -481,7 +481,7 @@ public class A_RayCode {
 							MutableObject temporaryVariable, Object[] args) {
 						int length = Function.toInteger(args[1]).intValue();
 						List<ArrayItem> result = new ArrayList<>();
-						getAllPerms(Function.toArray(args[0]), new ArrayList<ArrayItem>(), result, length, 0, 0);
+						getAllPerms(Function.toArray(args[0]), result, new ArrayList<ArrayItem>(), length, 0, 0);
 						return result;
 					}
 
@@ -489,19 +489,17 @@ public class A_RayCode {
 							List<ArrayItem> fullList, List<ArrayItem> currentList,
 							int requiredLength, int currentLength, int index) {
 						if (requiredLength == currentLength) {
-							fullList.add(new ArrayItem(currentList, Type.ARRAY));
+							fullList.add(new ArrayItem(new ArrayList<>(currentList), Type.ARRAY));
 							currentList.remove(currentLength - 1);
 							return;
 						}
-						if (index >= array.size()) {
-							System.err.println("Error1");
-							currentList = new ArrayList<ArrayItem>();
-							return;
-						}
-						for (int i = index, max = array.size() - requiredLength + currentLength; i <= max; i++) {
+						for (int i = index, max = array.size() - (requiredLength - currentLength); i <= max; i++) {
 							Object object = array.get(i).getValue();
 							currentList.add(new ArrayItem(object, Type.getMatch(object)));
 							getAllPerms(array, fullList, currentList, requiredLength, currentLength + 1, i + 1);
+						}
+						if (currentLength > 0) {
+							currentList.remove(currentLength - 1);
 						}
 					}
 

@@ -12,6 +12,8 @@ public class ArrayList<E> implements List<E>, Comparable<ArrayList<E>> {
 
 	private static final int GROWING_SIZE = 32;
 
+	private static final String SEPARATOR = ", ";
+
 	private Object[] array;
 	private int size = 0;
 
@@ -157,8 +159,12 @@ public class ArrayList<E> implements List<E>, Comparable<ArrayList<E>> {
 	public E remove(int index) {
 		@SuppressWarnings("unchecked")
 		E result = (E) array[index];
-		for (int i = index; i < size - 1; i++) {
-			array[i] = array[i + 1];
+		for (int i = index; i < size; i++) {
+			if (i + 2 > array.length) {
+				array[i] = null;
+			} else {
+				array[i] = array[i + 1];
+			}
 		}
 		size--;
 		return result;
@@ -288,6 +294,16 @@ public class ArrayList<E> implements List<E>, Comparable<ArrayList<E>> {
 			list.set(currentIndex, element);
 		}
 
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		result.append('[');
+		for (E element : this) {
+			result.append(element).append(SEPARATOR);
+		}
+		return result.delete(result.length() - SEPARATOR.length(), result.length()).append(']').toString();
 	}
 
 	@Override
