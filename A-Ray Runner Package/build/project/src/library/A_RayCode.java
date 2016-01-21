@@ -707,6 +707,66 @@ public class A_RayCode {
 					}
 
 				}));
+		functions.put("^", new Function<Object>(new Type[] { Type.OBJECT,
+				Type.OBJECT }, new RunnableFunction<Object>() {
+
+					@Override
+					public Object run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) {
+						Type type1 = Type.getMatch(args[0]);
+						Type type2 = Type.getMatch(args[1]);
+						if ((type1 == Type.DECIMAL || type1 == Type.INTEGER)
+								&& (type2 == Type.DECIMAL
+										|| type2 == Type.INTEGER)) {
+							return pow(args[0], type1, args[1],
+									type2);
+						}
+						return null;
+					}
+
+					private Object pow(Object number1, Type type1,
+							Object number2, Type type2) {
+						return toBigDecimal(number1, type1).pow(toBigDecimal(
+								number2, type2).intValue());
+					}
+
+					private BigDecimal toBigDecimal(Object number, Type type) {
+						return type == Type.INTEGER ? new BigDecimal(
+								(BigInteger) number) : (BigDecimal) number;
+					}
+
+				}));
+		functions.put("%", new Function<Object>(new Type[] { Type.OBJECT,
+				Type.OBJECT }, new RunnableFunction<Object>() {
+
+					@Override
+					public Object run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) {
+						Type type1 = Type.getMatch(args[0]);
+						Type type2 = Type.getMatch(args[1]);
+						if ((type1 == Type.DECIMAL || type1 == Type.INTEGER)
+								&& (type2 == Type.DECIMAL
+										|| type2 == Type.INTEGER)) {
+							return mod(args[0], type1, args[1],
+									type2);
+						}
+						return null;
+					}
+
+					private Object mod(Object number1, Type type1,
+							Object number2, Type type2) {
+						return toBigDecimal(number1, type1).remainder(toBigDecimal(
+								number2, type2));
+					}
+
+					private BigDecimal toBigDecimal(Object number, Type type) {
+						return type == Type.INTEGER ? new BigDecimal(
+								(BigInteger) number) : (BigDecimal) number;
+					}
+
+				}));
 		functions.put("=", new Function<Boolean>(new Type[] { Type.OBJECT,
 				Type.OBJECT }, new RunnableFunction<Boolean>() {
 
@@ -741,6 +801,56 @@ public class A_RayCode {
 							MutableObject temporaryVariable, Object[] args) {
 						return ((Comparable<Object>) args[0]).compareTo(
 								args[1]) > 0;
+					}
+
+				}));
+		functions.put("&", new Function<Object>(new Type[] { Type.OBJECT,
+				Type.OBJECT }, new RunnableFunction<Object>() {
+
+					@Override
+					public Object run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+						Type type1 = Type.getMatch(args[0]);
+						Type type2 = Type.getMatch(args[1]);
+						if (type1 == Type.INTEGER
+								&& type2 == Type.INTEGER) {
+							return Function.toInteger(args[0]).and(Function.toInteger(args[1]));
+						}
+						return Function.toBoolean(args[0]) && Function.toBoolean(args[1]);
+					}
+
+				}));
+		functions.put("|", new Function<Object>(new Type[] { Type.OBJECT,
+				Type.OBJECT }, new RunnableFunction<Object>() {
+
+					@Override
+					public Object run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+						Type type1 = Type.getMatch(args[0]);
+						Type type2 = Type.getMatch(args[1]);
+						if (type1 == Type.INTEGER
+								&& type2 == Type.INTEGER) {
+							return Function.toInteger(args[0]).or(Function.toInteger(args[1]));
+						}
+						return Function.toBoolean(args[0]) || Function.toBoolean(args[1]);
+					}
+
+				}));
+		functions.put("!", new Function<Object>(new Type[] { Type.OBJECT }, new RunnableFunction<Object>() {
+
+					@Override
+					public Object run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+						Type type1 = Type.getMatch(args[0]);
+						Type type2 = Type.getMatch(args[1]);
+						if (type1 == Type.INTEGER
+								&& type2 == Type.INTEGER) {
+							return Function.toInteger(args[0]).not();
+						}
+						return !Function.toBoolean(args[0]);
 					}
 
 				}));
