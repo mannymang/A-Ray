@@ -16,7 +16,7 @@ public final class Function<T> {
 
 	public T run(List<ArrayItem> memory, InputIterator input,
 			StringBuilder output, MutableObject temporaryVariable,
-			Object[] args) {
+			Object[] args) throws LoopFlag {
 		if (args.length != parameterTypes.length) {
 			throw new IllegalArgumentException(); // TODO
 		}
@@ -55,7 +55,7 @@ public final class Function<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static String toString(Object object) {
+	public static String toString(Object object) throws LoopFlag {
 		Type type = Type.getMatch(object);
 		if (type == null) {
 			return null;
@@ -90,7 +90,7 @@ public final class Function<T> {
 		return null;
 	}
 
-	public static BigDecimal toDecimal(Object object) {
+	public static BigDecimal toDecimal(Object object) throws LoopFlag {
 		Type type = Type.getMatch(object);
 		if (type == null) {
 			return null;
@@ -116,7 +116,7 @@ public final class Function<T> {
 		return null;
 	}
 
-	public static Character toChar(Object object) {
+	public static Character toChar(Object object) throws LoopFlag {
 		Type type = Type.getMatch(object);
 		if (type == null) {
 			return null;
@@ -164,7 +164,7 @@ public final class Function<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Boolean toBoolean(Object object) {
+	public static Boolean toBoolean(Object object) throws LoopFlag {
 		Type type = Type.getMatch(object);
 		if (type == null) {
 			return null;
@@ -191,7 +191,7 @@ public final class Function<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static BigInteger toInteger(Object object) {
+	public static BigInteger toInteger(Object object) throws LoopFlag {
 		Type type = Type.getMatch(object);
 		if (type == null) {
 			return null;

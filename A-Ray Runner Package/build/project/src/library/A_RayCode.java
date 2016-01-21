@@ -107,7 +107,7 @@ public class A_RayCode {
 					@Override
 					public Boolean run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
 						output.append(Function.toString(args[0]));
 						return true;
 					}
@@ -188,6 +188,252 @@ public class A_RayCode {
 						result.add(((BigInteger) args[2]).intValue(),
 								new ArrayItem(args[1], Type.getMatch(args[1])));
 						return result;
+					}
+
+				}));
+		functions.put("g", new Function<Object>(new Type[] { Type.ARRAY,
+				Type.INTEGER }, new RunnableFunction<Object>() {
+
+					@Override
+					public Object run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+						List<ArrayItem> result = Function.toArray(args[0]);
+						return result.get(Function.toInteger(args[1])
+								.intValue()).getValue();
+					}
+
+				}));
+		functions.put("G", new Function<Object>(new Type[] { Type.ARRAY,
+				Type.INTEGER, Type.OBJECT }, new RunnableFunction<Object>() {
+
+					@Override
+					public Object run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+						List<ArrayItem> result = Function.toArray(args[0]);
+						return result.set(Function.toInteger(args[1])
+								.intValue(), new ArrayItem(args[2], Type
+										.getMatch(args[2])));
+					}
+
+				}));
+		functions.put("f", new Function<Boolean>(new Type[] { Type.FUNCTION },
+				new RunnableFunction<Boolean>() {
+
+					@Override
+					public Boolean run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) {
+						boolean result = false;
+						LoopCode code = new LoopCode(((A_RayCode) args[0]).code,
+								memory, input, output, temporaryVariable);
+						boolean keepRunning = true;
+						while (keepRunning) {
+							try {
+								keepRunning = code.run();
+							} catch (LoopFlag e) {
+								if (e.getAction() == Action.BREAK) {
+									keepRunning = false;
+								}
+							}
+							result = true;
+						}
+						return result;
+					}
+
+				}));
+		functions.put("F", new Function<Boolean>(new Type[] { Type.ARRAY,
+				Type.FUNCTION }, new RunnableFunction<Boolean>() {
+
+					@Override
+					public Boolean run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) {
+						boolean result = false;
+						IteratorCode code = new IteratorCode(Function.toArray(
+								args[0]), ((A_RayCode) args[0]).code, memory,
+								input, output, temporaryVariable);
+						boolean keepRunning = true;
+						while (keepRunning) {
+							try {
+								keepRunning = code.run();
+							} catch (LoopFlag e) {
+								if (e.getAction() == Action.BREAK) {
+									keepRunning = false;
+								}
+							}
+							result = true;
+						}
+						return result;
+					}
+
+				}));
+		functions.put("?", new Function<Boolean>(new Type[] { Type.BOOLEAN,
+				Type.FUNCTION, Type.FUNCTION },
+				new RunnableFunction<Boolean>() {
+
+					@Override
+					public Boolean run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+						boolean result = Function.toBoolean(args[0]);
+						A_RayCode code = (A_RayCode) (result ? args[1]
+								: args[2]);
+						code.run(0);
+						return result;
+					}
+
+				}));
+		functions.put(" ", new Function<A_RayCode>(new Type[] {},
+				new RunnableFunction<A_RayCode>() {
+
+					@Override
+					public A_RayCode run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) {
+						return new A_RayCode("", memory, input, output,
+								temporaryVariable);
+					}
+
+				}));
+		functions.put("e", new Function<List<ArrayItem>>(new Type[] {},
+				new RunnableFunction<List<ArrayItem>>() {
+
+					@Override
+					public List<ArrayItem> run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) {
+						return memory;
+					}
+
+				}));
+		functions.put("E", new Function<List<ArrayItem>>(new Type[] {
+				Type.ARRAY }, new RunnableFunction<List<ArrayItem>>() {
+
+					@Override
+					public List<ArrayItem> run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) {
+						List<ArrayItem> result = new ArrayList<>(memory);
+						memory.clear();
+						memory.addAll(Function.toArray(args[0]));
+						return result;
+					}
+
+				}));
+		functions.put("l", new Function<BigInteger>(new Type[] { Type.ARRAY },
+				new RunnableFunction<BigInteger>() {
+
+					@Override
+					public BigInteger run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) {
+						return BigInteger.valueOf(Function.toArray(args[0])
+								.size());
+					}
+
+				}));
+		functions.put("t", new Function<Object>(new Type[] {},
+				new RunnableFunction<Object>() {
+
+					@Override
+					public Object run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) {
+						return temporaryVariable.getValue();
+					}
+
+				}));
+		functions.put("T", new Function<Object>(new Type[] { Type.OBJECT },
+				new RunnableFunction<Object>() {
+
+					@Override
+					public Object run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) {
+						Object result = temporaryVariable.getValue();
+						temporaryVariable.setValue(args[0]);
+						return result == null ? new Object() : result;
+					}
+
+				}));
+		functions.put(":", new Function<List<ArrayItem>>(new Type[] {
+				Type.ARRAY, Type.INTEGER },
+				new RunnableFunction<List<ArrayItem>>() {
+
+					@Override
+					public List<ArrayItem> run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+						int length = Function.toInteger(args[1]).intValue();
+						List<ArrayItem> result = new ArrayList<>();
+						getAllPerms(Function.toArray(args[0]), result, new ArrayList<ArrayItem>(), length, 0, 0);
+						return result;
+					}
+
+					private void getAllPerms(List<ArrayItem> array,
+							List<ArrayItem> fullList, List<ArrayItem> currentList,
+							int requiredLength, int currentLength, int index) {
+						if (requiredLength == currentLength) {
+							fullList.add(new ArrayItem(new ArrayList<>(currentList), Type.ARRAY));
+							currentList.remove(currentLength - 1);
+							return;
+						}
+						for (int i = index, max = array.size() - (requiredLength - currentLength); i <= max; i++) {
+							Object object = array.get(i).getValue();
+							currentList.add(new ArrayItem(object, Type.getMatch(object)));
+							getAllPerms(array, fullList, currentList, requiredLength, currentLength + 1, i + 1);
+						}
+						if (currentLength > 0) {
+							currentList.remove(currentLength - 1);
+						}
+					}
+
+				}));
+		functions.put("m", new Function<Object>(new Type[] { Type.ARRAY },
+				new RunnableFunction<Object>() {
+
+					@Override
+					public Object run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) {
+						List<ArrayItem> array = Function.toArray(args[0]);
+						return Collections.min(array).getValue();
+					}
+
+				}));
+		functions.put("M", new Function<Object>(new Type[] { Type.ARRAY },
+				new RunnableFunction<Object>() {
+
+					@Override
+					public Object run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) {
+						List<ArrayItem> array = Function.toArray(args[0]);
+						return Collections.max(array).getValue();
+					}
+
+				}));
+		functions.put("b", new Function<Object>(new Type[] {},
+				new RunnableFunction<Object>() {
+
+					@Override
+					public Object run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+						throw new LoopFlag(Action.BREAK);
+					}
+
+				}));
+		functions.put("B", new Function<Object>(new Type[] {},
+				new RunnableFunction<Object>() {
+
+					@Override
+					public Object run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+						throw new LoopFlag(Action.CONTINUE);
 					}
 
 				}));
@@ -311,222 +557,13 @@ public class A_RayCode {
 					}
 
 				}));
-		functions.put("g", new Function<Object>(new Type[] { Type.ARRAY,
-				Type.INTEGER }, new RunnableFunction<Object>() {
-
-					@Override
-					public Object run(List<ArrayItem> memory,
-							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						List<ArrayItem> result = Function.toArray(args[0]);
-						return result.get(Function.toInteger(args[1])
-								.intValue()).getValue();
-					}
-
-				}));
-		functions.put("G", new Function<Object>(new Type[] { Type.ARRAY,
-				Type.INTEGER, Type.OBJECT }, new RunnableFunction<Object>() {
-
-					@Override
-					public Object run(List<ArrayItem> memory,
-							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						List<ArrayItem> result = Function.toArray(args[0]);
-						return result.set(Function.toInteger(args[1])
-								.intValue(), new ArrayItem(args[2], Type
-										.getMatch(args[2])));
-					}
-
-				}));
-		functions.put("f", new Function<Boolean>(new Type[] { Type.FUNCTION },
-				new RunnableFunction<Boolean>() {
-
-					@Override
-					public Boolean run(List<ArrayItem> memory,
-							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						boolean result = false;
-						LoopCode code = new LoopCode(((A_RayCode) args[0]).code,
-								memory, input, output, temporaryVariable);
-						while (code.run()) {
-							result = true;
-						}
-						return result;
-					}
-
-				}));
-		functions.put("F", new Function<Boolean>(new Type[] { Type.ARRAY,
-				Type.FUNCTION }, new RunnableFunction<Boolean>() {
-
-					@Override
-					public Boolean run(List<ArrayItem> memory,
-							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						boolean result = false;
-						IteratorCode code = new IteratorCode(Function.toArray(
-								args[0]), ((A_RayCode) args[0]).code, memory,
-								input, output, temporaryVariable);
-						while (code.run()) {
-							result = true;
-						}
-						return result;
-					}
-
-				}));
-		functions.put("?", new Function<Boolean>(new Type[] { Type.BOOLEAN,
-				Type.FUNCTION, Type.FUNCTION },
-				new RunnableFunction<Boolean>() {
-
-					@Override
-					public Boolean run(List<ArrayItem> memory,
-							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						boolean result = Function.toBoolean(args[0]);
-						A_RayCode code = (A_RayCode) (result ? args[1]
-								: args[2]);
-						code.run(0);
-						return result;
-					}
-
-				}));
-		functions.put(" ", new Function<A_RayCode>(new Type[] {},
-				new RunnableFunction<A_RayCode>() {
-
-					@Override
-					public A_RayCode run(List<ArrayItem> memory,
-							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						return new A_RayCode("", memory, input, output,
-								temporaryVariable);
-					}
-
-				}));
-		functions.put("e", new Function<List<ArrayItem>>(new Type[] {},
-				new RunnableFunction<List<ArrayItem>>() {
-
-					@Override
-					public List<ArrayItem> run(List<ArrayItem> memory,
-							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						return memory;
-					}
-
-				}));
-		functions.put("E", new Function<List<ArrayItem>>(new Type[] {
-				Type.ARRAY }, new RunnableFunction<List<ArrayItem>>() {
-
-					@Override
-					public List<ArrayItem> run(List<ArrayItem> memory,
-							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						List<ArrayItem> result = new ArrayList<>(memory);
-						memory.clear();
-						memory.addAll(Function.toArray(args[0]));
-						return result;
-					}
-
-				}));
-		functions.put("l", new Function<BigInteger>(new Type[] { Type.ARRAY },
-				new RunnableFunction<BigInteger>() {
-
-					@Override
-					public BigInteger run(List<ArrayItem> memory,
-							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						return BigInteger.valueOf(Function.toArray(args[0])
-								.size());
-					}
-
-				}));
-		functions.put("t", new Function<Object>(new Type[] {},
-				new RunnableFunction<Object>() {
-
-					@Override
-					public Object run(List<ArrayItem> memory,
-							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						return temporaryVariable.getValue();
-					}
-
-				}));
-		functions.put("T", new Function<Object>(new Type[] { Type.OBJECT },
-				new RunnableFunction<Object>() {
-
-					@Override
-					public Object run(List<ArrayItem> memory,
-							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						Object result = temporaryVariable.getValue();
-						temporaryVariable.setValue(args[0]);
-						return result == null ? new Object() : result;
-					}
-
-				}));
-		
-		functions.put(":", new Function<List<ArrayItem>>(new Type[] {
-				Type.ARRAY, Type.INTEGER },
-				new RunnableFunction<List<ArrayItem>>() {
-
-					@Override
-					public List<ArrayItem> run(List<ArrayItem> memory,
-							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						int length = Function.toInteger(args[1]).intValue();
-						List<ArrayItem> result = new ArrayList<>();
-						getAllPerms(Function.toArray(args[0]), result, new ArrayList<ArrayItem>(), length, 0, 0);
-						return result;
-					}
-
-					private void getAllPerms(List<ArrayItem> array,
-							List<ArrayItem> fullList, List<ArrayItem> currentList,
-							int requiredLength, int currentLength, int index) {
-						if (requiredLength == currentLength) {
-							fullList.add(new ArrayItem(new ArrayList<>(currentList), Type.ARRAY));
-							currentList.remove(currentLength - 1);
-							return;
-						}
-						for (int i = index, max = array.size() - (requiredLength - currentLength); i <= max; i++) {
-							Object object = array.get(i).getValue();
-							currentList.add(new ArrayItem(object, Type.getMatch(object)));
-							getAllPerms(array, fullList, currentList, requiredLength, currentLength + 1, i + 1);
-						}
-						if (currentLength > 0) {
-							currentList.remove(currentLength - 1);
-						}
-					}
-
-				}));
-		functions.put("m", new Function<Object>(new Type[] { Type.ARRAY },
-				new RunnableFunction<Object>() {
-
-					@Override
-					public Object run(List<ArrayItem> memory,
-							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						List<ArrayItem> array = Function.toArray(args[0]);
-						return Collections.min(array).getValue();
-					}
-
-				}));
-		functions.put("M", new Function<Object>(new Type[] { Type.ARRAY },
-				new RunnableFunction<Object>() {
-
-					@Override
-					public Object run(List<ArrayItem> memory,
-							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						List<ArrayItem> array = Function.toArray(args[0]);
-						return Collections.max(array).getValue();
-					}
-
-				}));
 		functions.put("+", new Function<Object>(new Type[] { Type.OBJECT,
 				Type.OBJECT }, new RunnableFunction<Object>() {
 
 					@Override
 					public Object run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
 						Type type1 = Type.getMatch(args[0]);
 						Type type2 = Type.getMatch(args[1]);
 						if ((type1 == Type.DECIMAL || type1 == Type.INTEGER)
@@ -561,7 +598,7 @@ public class A_RayCode {
 					}
 
 					private String concat(Object object1, Object object2,
-							Type type2) {
+							Type type2) throws LoopFlag {
 						return Function.toString(object1) + Function.toString(
 								object2);
 					}
@@ -573,7 +610,7 @@ public class A_RayCode {
 					@Override
 					public Object run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
 						Type type1 = Type.getMatch(args[0]);
 						Type type2 = Type.getMatch(args[1]);
 						if ((type1 == Type.DECIMAL || type1 == Type.INTEGER)
@@ -739,7 +776,11 @@ public class A_RayCode {
 		// run
 		FunctionResult value = new FunctionResult(null, 0);
 		do {
-			value = run(value.currentIndex);
+			try {
+				value = run(value.currentIndex);
+			} catch (LoopFlag e) {
+				return "Loop flag not resolved\n";
+			}
 		} while (value.result != null);
 
 		return output.toString();
@@ -750,7 +791,7 @@ public class A_RayCode {
 		return code;
 	}
 
-	protected FunctionResult run(int index) {
+	protected FunctionResult run(int index) throws LoopFlag {
 		if (index >= code.length()) {
 			return new FunctionResult(null, index);
 		}
