@@ -437,6 +437,17 @@ public class A_RayCode {
 					}
 
 				}));
+		functions.put("R", new Function<Boolean>(new Type[] {Type.STRING, Type.STRING},
+				new RunnableFunction<Boolean>() {
+
+					@Override
+					public Boolean run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+						return Function.toString(args[1]).matches(Function.toString(args[0]));
+					}
+
+				}));
 
 		final BigInteger TWO = BigInteger.valueOf(2L);
 		final BigInteger THREE = BigInteger.valueOf(3L);
@@ -774,7 +785,16 @@ public class A_RayCode {
 					public Boolean run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
-						return args[0].equals(args[1]);
+						Type type1 = Type.getMatch(args[0]);
+						Type type2 = Type.getMatch(args[1]);
+						if (type1 == type2) {
+							return args[0].equals(args[1]);
+						} else if (type1 == Type.CHARACTER && type2 == Type.STRING) {
+							return Character.toString((char) args[0]).equals(args[1]);
+						} else if (type2 == Type.CHARACTER && type1 == Type.STRING) {
+							return Character.toString((char) args[1]).equals(args[0]);
+						}
+						return args[0].equals(args[1]); // TODO
 					}
 
 				}));
@@ -914,9 +934,6 @@ public class A_RayCode {
 		case '$':
 			endIndex = code.indexOf('$', ++index);
 			functionName = code.substring(index, endIndex);
-			break;
-		case '~':
-			functionName = Character.toString(code.charAt(++endIndex));
 			break;
 		case '#':
 			endIndex = code.indexOf('{', ++index);

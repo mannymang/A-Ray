@@ -60,6 +60,7 @@ public class A_RayGUI extends Application { // TODO sign file
 				output.setText(new A_RayCode(codeArea.getText(), input.getText()).runAndGetOutput());
 			} catch (RuntimeException exception) {
 				output.setText("Error");
+				exception.printStackTrace();
 			}
 			
 		});
