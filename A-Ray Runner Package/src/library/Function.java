@@ -53,6 +53,42 @@ public final class Function<T> {
 	public Type[] getParameterTypes() {
 		return parameterTypes;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static int compare(Object object1, Object object2) throws LoopFlag {
+		if (object1 == null) {
+			if (object2 == null) {
+				return 0;
+			}
+			return -1;
+		}
+		if (object2 == null) {
+			return 1;
+		}
+		Type type1 = Type.getMatch(object1);
+		Type type2 = Type.getMatch(object2);
+		if (type1 == Type.FUNCTION) {
+			object1 = ((A_RayCode) object1).run(0).result;
+			type1 = Type.getMatch(object1);
+		}
+		if (type2 == Type.FUNCTION) {
+			object2 = ((A_RayCode) object2).run(0).result;
+			type2 = Type.getMatch(object2);
+		}
+		if (type1 == type2) {
+			return ((Comparable<Object>) object1).compareTo(object2);
+		}
+		if (type1 == Type.BOOLEAN || type2 == Type.BOOLEAN) {
+			boolean bool1 = toBoolean(object1);
+			boolean bool2 = toBoolean(object2);
+			if (bool1) {
+				return bool2 ? 0 : 1;
+			} else {
+				return bool2 ? -1 : 0;
+			}
+		}
+		return 0;
+	}
 
 	@SuppressWarnings("unchecked")
 	public static String toString(Object object) throws LoopFlag {

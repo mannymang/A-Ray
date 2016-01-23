@@ -231,7 +231,7 @@ public class A_RayCode {
 						boolean keepRunning = true;
 						while (keepRunning) {
 							try {
-								keepRunning = code.run();
+								keepRunning = (boolean) code.run().result;
 							} catch (LoopFlag e) {
 								if (e.getAction() == Action.BREAK) {
 									keepRunning = false;
@@ -257,7 +257,7 @@ public class A_RayCode {
 						boolean keepRunning = true;
 						while (keepRunning) {
 							try {
-								keepRunning = code.run();
+								keepRunning = (boolean) code.run().result;
 							} catch (LoopFlag e) {
 								if (e.getAction() == Action.BREAK) {
 									keepRunning = false;
@@ -280,7 +280,7 @@ public class A_RayCode {
 						boolean result = Function.toBoolean(args[0]);
 						A_RayCode code = (A_RayCode) (result ? args[1]
 								: args[2]);
-						code.run(0);
+						code.run();
 						return result;
 					}
 
@@ -801,26 +801,22 @@ public class A_RayCode {
 		functions.put("<", new Function<Boolean>(new Type[] { Type.OBJECT,
 				Type.OBJECT }, new RunnableFunction<Boolean>() {
 
-					@SuppressWarnings("unchecked")
 					@Override
 					public Boolean run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						return ((Comparable<Object>) args[0]).compareTo(
-								args[1]) < 0;
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+						return Function.compare(args[0], args[1]) < 0;
 					}
 
 				}));
 		functions.put(">", new Function<Boolean>(new Type[] { Type.OBJECT,
 				Type.OBJECT }, new RunnableFunction<Boolean>() {
 
-					@SuppressWarnings("unchecked")
 					@Override
 					public Boolean run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) {
-						return ((Comparable<Object>) args[0]).compareTo(
-								args[1]) > 0;
+							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+						return Function.compare(args[0], args[1]) > 0;
 					}
 
 				}));
@@ -903,15 +899,11 @@ public class A_RayCode {
 		output.delete(0, output.length());
 		memory.clear();
 
-		// run
-		FunctionResult value = new FunctionResult(null, 0);
-		do {
-			try {
-				value = run(value.currentIndex);
-			} catch (LoopFlag e) {
-				return "Loop flag not resolved\n";
-			}
-		} while (value.result != null);
+		try {
+			run();
+		} catch (LoopFlag e) {
+			return "Loop flag not resolved\n";
+		}
 
 		return output.toString();
 	}
@@ -919,6 +911,15 @@ public class A_RayCode {
 	@Override
 	public String toString() {
 		return code;
+	}
+	
+	protected FunctionResult run() throws LoopFlag {
+		// run
+		FunctionResult value = new FunctionResult(null, 0);
+		do {
+			value = run(value.currentIndex);
+		} while (value.result != null);
+		return value;
 	}
 
 	protected FunctionResult run(int index) throws LoopFlag {
@@ -990,11 +991,11 @@ public class A_RayCode {
 				temporaryVariable, args), index);
 	}
 
-	private List<ArrayItem> createNewArray(String substring) {
+	private List<ArrayItem> createNewArray(String substring) throws LoopFlag {
 		String[] array = substring.split("\\}\\{");
 		List<ArrayItem> result = new ArrayList<>();
 		for (String string : array) {
-			result.add(new ArrayItem(new A_RayCode(string, memory, input, output, temporaryVariable), Type.FUNCTION));
+			result.add(new ArrayItem(new A_RayCode(string, memory, input, output, temporaryVariable).run().result, Type.OBJECT));
 		}
 		return result;
 	}

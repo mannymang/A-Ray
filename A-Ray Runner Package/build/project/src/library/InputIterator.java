@@ -39,8 +39,11 @@ public class InputIterator implements Iterator<Character> {
 	}
 
 	public String nextCharsUntil(Predicate<Character> predicate) {
-		int endIndex = index + 1;
-		while (endIndex != length && !predicate.test(input.charAt(endIndex))) {
+		if (!hasNext()) {
+			return "";
+		}
+		int endIndex = index;
+		while (endIndex < length && !predicate.test(input.charAt(endIndex))) {
 			endIndex++;
 		}
 		String result = input.substring(index, endIndex);

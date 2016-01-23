@@ -27,7 +27,8 @@ public class LoopCode extends A_RayCode {
 				}));
 	}
 	
-	public boolean run() throws LoopFlag {
+	@Override
+	public FunctionResult run() throws LoopFlag {
 		// run
 		FunctionResult value = new FunctionResult(null, 0);
 		do {
@@ -37,7 +38,7 @@ public class LoopCode extends A_RayCode {
 		if (out) {
 			functions.put(X, oldXFunction);
 		}
-		return !out;
+		return new FunctionResult(!out, value.currentIndex);
 	}
 	
 	@Override
