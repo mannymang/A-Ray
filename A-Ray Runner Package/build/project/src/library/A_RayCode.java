@@ -974,7 +974,7 @@ public class A_RayCode {
 			}
 		case '[':
 			endIndex = indexOfMatchingClose(index, ']');
-			return createNewArray(code.substring(index + 1, endIndex));
+			return new FunctionResult(createNewArray(code.substring(index + 1, endIndex++)), endIndex);
 		}
 		index = endIndex;
 		function = functions.get(functionName);
@@ -990,9 +990,13 @@ public class A_RayCode {
 				temporaryVariable, args), index);
 	}
 
-	private FunctionResult createNewArray(String substring) {
-		// TODO Auto-generated method stub
-		return null;
+	private List<ArrayItem> createNewArray(String substring) {
+		String[] array = substring.split("\\}\\{");
+		List<ArrayItem> result = new ArrayList<>();
+		for (String string : array) {
+			result.add(new ArrayItem(new A_RayCode(string, memory, input, output, temporaryVariable), Type.FUNCTION));
+		}
+		return result;
 	}
 
 	private int indexOfMatchingClose(int index, char close) {
