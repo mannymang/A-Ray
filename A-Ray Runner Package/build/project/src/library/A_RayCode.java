@@ -107,7 +107,8 @@ public class A_RayCode {
 					@Override
 					public Boolean run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
 						output.append(Function.toString(args[0]));
 						return true;
 					}
@@ -197,7 +198,8 @@ public class A_RayCode {
 					@Override
 					public Object run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
 						List<ArrayItem> result = Function.toArray(args[0]);
 						return result.get(Function.toInteger(args[1])
 								.intValue()).getValue();
@@ -210,7 +212,8 @@ public class A_RayCode {
 					@Override
 					public Object run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
 						List<ArrayItem> result = Function.toArray(args[0]);
 						return result.set(Function.toInteger(args[1])
 								.intValue(), new ArrayItem(args[2], Type
@@ -276,7 +279,8 @@ public class A_RayCode {
 					@Override
 					public Boolean run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
 						boolean result = Function.toBoolean(args[0]);
 						A_RayCode code = (A_RayCode) (result ? args[1]
 								: args[2]);
@@ -365,25 +369,32 @@ public class A_RayCode {
 					@Override
 					public List<ArrayItem> run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
 						int length = Function.toInteger(args[1]).intValue();
 						List<ArrayItem> result = new ArrayList<>();
-						getAllPerms(Function.toArray(args[0]), result, new ArrayList<ArrayItem>(), length, 0, 0);
+						getAllPerms(Function.toArray(args[0]), result,
+								new ArrayList<ArrayItem>(), length, 0, 0);
 						return result;
 					}
 
 					private void getAllPerms(List<ArrayItem> array,
-							List<ArrayItem> fullList, List<ArrayItem> currentList,
-							int requiredLength, int currentLength, int index) {
+							List<ArrayItem> fullList,
+							List<ArrayItem> currentList, int requiredLength,
+							int currentLength, int index) {
 						if (requiredLength == currentLength) {
-							fullList.add(new ArrayItem(new ArrayList<>(currentList), Type.ARRAY));
+							fullList.add(new ArrayItem(new ArrayList<>(
+									currentList), Type.ARRAY));
 							currentList.remove(currentLength - 1);
 							return;
 						}
-						for (int i = index, max = array.size() - (requiredLength - currentLength); i <= max; i++) {
+						for (int i = index, max = array.size() - (requiredLength
+								- currentLength); i <= max; i++) {
 							Object object = array.get(i).getValue();
-							currentList.add(new ArrayItem(object, Type.getMatch(object)));
-							getAllPerms(array, fullList, currentList, requiredLength, currentLength + 1, i + 1);
+							currentList.add(new ArrayItem(object, Type.getMatch(
+									object)));
+							getAllPerms(array, fullList, currentList,
+									requiredLength, currentLength + 1, i + 1);
 						}
 						if (currentLength > 0) {
 							currentList.remove(currentLength - 1);
@@ -421,7 +432,8 @@ public class A_RayCode {
 					@Override
 					public Object run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
 						throw new LoopFlag(Action.BREAK);
 					}
 
@@ -432,19 +444,60 @@ public class A_RayCode {
 					@Override
 					public Object run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
 						throw new LoopFlag(Action.CONTINUE);
 					}
 
 				}));
-		functions.put("R", new Function<Boolean>(new Type[] {Type.STRING, Type.STRING},
-				new RunnableFunction<Boolean>() {
+		functions.put("R", new Function<Boolean>(new Type[] { Type.STRING,
+				Type.STRING }, new RunnableFunction<Boolean>() {
 
 					@Override
 					public Boolean run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
-						return Function.toString(args[1]).matches(Function.toString(args[0]));
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
+						return Function.toString(args[1]).matches(Function
+								.toString(args[0]));
+					}
+
+				}));
+		functions.put("u", new Function<List<ArrayItem>>(new Type[] {
+				Type.INTEGER }, new RunnableFunction<List<ArrayItem>>() {
+
+					@Override
+					public List<ArrayItem> run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
+						BigInteger to = Function.toInteger(args[0]);
+						List<ArrayItem> result = new ArrayList<>(to.intValue());
+						while (!to.equals(BigInteger.ONE)) {
+							to = to.subtract(BigInteger.ONE);
+							result.add(0, new ArrayItem(to, Type.INTEGER));
+						}
+						return result;
+					}
+
+				}));
+		functions.put("U", new Function<List<ArrayItem>>(new Type[] {
+				Type.INTEGER, Type.INTEGER },
+				new RunnableFunction<List<ArrayItem>>() {
+
+					@Override
+					public List<ArrayItem> run(List<ArrayItem> memory,
+							InputIterator input, StringBuilder output,
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
+						BigInteger from = Function.toInteger(args[0]);
+						BigInteger to = Function.toInteger(args[1]);
+						List<ArrayItem> result = new ArrayList<>();
+						while (!from.equals(to)) {
+							result.add(0, new ArrayItem(to, Type.INTEGER));
+							from = from.add(BigInteger.ONE);
+						}
+						return result;
 					}
 
 				}));
@@ -574,7 +627,8 @@ public class A_RayCode {
 					@Override
 					public Object run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
 						Type type1 = Type.getMatch(args[0]);
 						Type type2 = Type.getMatch(args[1]);
 						if ((type1 == Type.DECIMAL || type1 == Type.INTEGER)
@@ -621,7 +675,8 @@ public class A_RayCode {
 					@Override
 					public Object run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
 						Type type1 = Type.getMatch(args[0]);
 						Type type2 = Type.getMatch(args[1]);
 						if ((type1 == Type.DECIMAL || type1 == Type.INTEGER)
@@ -730,8 +785,7 @@ public class A_RayCode {
 						if ((type1 == Type.DECIMAL || type1 == Type.INTEGER)
 								&& (type2 == Type.DECIMAL
 										|| type2 == Type.INTEGER)) {
-							return pow(args[0], type1, args[1],
-									type2);
+							return pow(args[0], type1, args[1], type2);
 						}
 						return null;
 					}
@@ -760,16 +814,15 @@ public class A_RayCode {
 						if ((type1 == Type.DECIMAL || type1 == Type.INTEGER)
 								&& (type2 == Type.DECIMAL
 										|| type2 == Type.INTEGER)) {
-							return mod(args[0], type1, args[1],
-									type2);
+							return mod(args[0], type1, args[1], type2);
 						}
 						return null;
 					}
 
 					private Object mod(Object number1, Type type1,
 							Object number2, Type type2) {
-						return toBigDecimal(number1, type1).remainder(toBigDecimal(
-								number2, type2));
+						return toBigDecimal(number1, type1).remainder(
+								toBigDecimal(number2, type2));
 					}
 
 					private BigDecimal toBigDecimal(Object number, Type type) {
@@ -789,10 +842,14 @@ public class A_RayCode {
 						Type type2 = Type.getMatch(args[1]);
 						if (type1 == type2) {
 							return args[0].equals(args[1]);
-						} else if (type1 == Type.CHARACTER && type2 == Type.STRING) {
-							return Character.toString((char) args[0]).equals(args[1]);
-						} else if (type2 == Type.CHARACTER && type1 == Type.STRING) {
-							return Character.toString((char) args[1]).equals(args[0]);
+						} else if (type1 == Type.CHARACTER
+								&& type2 == Type.STRING) {
+							return Character.toString((char) args[0]).equals(
+									args[1]);
+						} else if (type2 == Type.CHARACTER
+								&& type1 == Type.STRING) {
+							return Character.toString((char) args[1]).equals(
+									args[0]);
 						}
 						return args[0].equals(args[1]); // TODO
 					}
@@ -804,7 +861,8 @@ public class A_RayCode {
 					@Override
 					public Boolean run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
 						return Function.compare(args[0], args[1]) < 0;
 					}
 
@@ -815,7 +873,8 @@ public class A_RayCode {
 					@Override
 					public Boolean run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
 						return Function.compare(args[0], args[1]) > 0;
 					}
 
@@ -826,14 +885,16 @@ public class A_RayCode {
 					@Override
 					public Object run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
 						Type type1 = Type.getMatch(args[0]);
 						Type type2 = Type.getMatch(args[1]);
-						if (type1 == Type.INTEGER
-								&& type2 == Type.INTEGER) {
-							return Function.toInteger(args[0]).and(Function.toInteger(args[1]));
+						if (type1 == Type.INTEGER && type2 == Type.INTEGER) {
+							return Function.toInteger(args[0]).and(Function
+									.toInteger(args[1]));
 						}
-						return Function.toBoolean(args[0]) && Function.toBoolean(args[1]);
+						return Function.toBoolean(args[0]) && Function
+								.toBoolean(args[1]);
 					}
 
 				}));
@@ -843,27 +904,30 @@ public class A_RayCode {
 					@Override
 					public Object run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
 						Type type1 = Type.getMatch(args[0]);
 						Type type2 = Type.getMatch(args[1]);
-						if (type1 == Type.INTEGER
-								&& type2 == Type.INTEGER) {
-							return Function.toInteger(args[0]).or(Function.toInteger(args[1]));
+						if (type1 == Type.INTEGER && type2 == Type.INTEGER) {
+							return Function.toInteger(args[0]).or(Function
+									.toInteger(args[1]));
 						}
-						return Function.toBoolean(args[0]) || Function.toBoolean(args[1]);
+						return Function.toBoolean(args[0]) || Function
+								.toBoolean(args[1]);
 					}
 
 				}));
-		functions.put("!", new Function<Object>(new Type[] { Type.OBJECT }, new RunnableFunction<Object>() {
+		functions.put("!", new Function<Object>(new Type[] { Type.OBJECT },
+				new RunnableFunction<Object>() {
 
 					@Override
 					public Object run(List<ArrayItem> memory,
 							InputIterator input, StringBuilder output,
-							MutableObject temporaryVariable, Object[] args) throws LoopFlag {
+							MutableObject temporaryVariable, Object[] args)
+									throws LoopFlag {
 						Type type1 = Type.getMatch(args[0]);
 						Type type2 = Type.getMatch(args[1]);
-						if (type1 == Type.INTEGER
-								&& type2 == Type.INTEGER) {
+						if (type1 == Type.INTEGER && type2 == Type.INTEGER) {
 							return Function.toInteger(args[0]).not();
 						}
 						return !Function.toBoolean(args[0]);
@@ -912,7 +976,7 @@ public class A_RayCode {
 	public String toString() {
 		return code;
 	}
-	
+
 	protected FunctionResult run() throws LoopFlag {
 		// run
 		FunctionResult value = new FunctionResult(null, 0);
@@ -975,7 +1039,8 @@ public class A_RayCode {
 			}
 		case '[':
 			endIndex = indexOfMatchingClose(index, ']');
-			return new FunctionResult(createNewArray(code.substring(index + 1, endIndex++)), endIndex);
+			return new FunctionResult(createNewArray(code.substring(index + 1,
+					endIndex++)), endIndex);
 		}
 		index = endIndex;
 		function = functions.get(functionName);
@@ -995,7 +1060,8 @@ public class A_RayCode {
 		String[] array = substring.split("\\}\\{");
 		List<ArrayItem> result = new ArrayList<>();
 		for (String string : array) {
-			result.add(new ArrayItem(new A_RayCode(string, memory, input, output, temporaryVariable).run().result, Type.OBJECT));
+			result.add(new ArrayItem(new A_RayCode(string, memory, input,
+					output, temporaryVariable).run().result, Type.OBJECT));
 		}
 		return result;
 	}
