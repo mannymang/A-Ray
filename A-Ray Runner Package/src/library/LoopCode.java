@@ -12,14 +12,14 @@ public class LoopCode extends A_RayCode {
 	
 	private final Function<?> oldXFunction; 
 	
-	public LoopCode(String code, List<ArrayItem> memory, InputIterator input, StringBuilder output, MutableObject temporaryVariable) {
+	public LoopCode(String code, List<Object> memory, InputIterator input, StringBuilder output, MutableObject temporaryVariable) {
 		super(code, memory, input, output, temporaryVariable);
 		oldXFunction = functions.get(X);
 		functions.put(X, new Function<BigInteger>(new Type[] {},
 				new RunnableFunction<BigInteger>() {
 
 					@Override
-					public BigInteger run(List<ArrayItem> memory, InputIterator input,
+					public BigInteger run(List<Object> memory, InputIterator input,
 							StringBuilder output, MutableObject temporaryVariable, Object[] args) {
 						return count;
 					}

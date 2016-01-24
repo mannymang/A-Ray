@@ -14,7 +14,7 @@ public final class Function<T> {
 		this.function = function;
 	}
 
-	public T run(List<ArrayItem> memory, InputIterator input,
+	public T run(List<Object> memory, InputIterator input,
 			StringBuilder output, MutableObject temporaryVariable,
 			Object[] args) throws LoopFlag {
 		if (args.length != parameterTypes.length) {
@@ -98,16 +98,16 @@ public final class Function<T> {
 		}
 		switch (type) {
 		case ARRAY:
-			List<ArrayItem> array = (List<ArrayItem>) object;
-			Object value = array.get(0).getValue();
+			List<Object> array = (List<Object>) object;
+			Object value = array.get(0);
 			if (Type.CHARACTER.isMatch(value) || Type.STRING.isMatch(value)) {
 				StringBuilder result = new StringBuilder();
-				for (ArrayItem item : array) {
+				for (Object item : array) {
 					result.append(item);
 				}
 				return result.toString();
 			}
-			return ((List<ArrayItem>) object).toString();
+			return ((List<Object>) object).toString();
 		case BOOLEAN:
 			return Boolean.toString((boolean) object);
 		case CHARACTER:
@@ -181,20 +181,20 @@ public final class Function<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<ArrayItem> toArray(Object object) {
+	public static List<Object> toArray(Object object) {
 		Type type = Type.getMatch(object);
 		if (type == null) {
 			return null;
 		}
-		List<ArrayItem> array = new ArrayList<>();
+		List<Object> array = new ArrayList<>();
 		switch (type) {
 		case ARRAY:
-			return ((List<ArrayItem>) object);
+			return ((List<Object>) object);
 		case STRING:
-			((String) object).chars().forEach(e -> array.add(new ArrayItem((char) e, type)));
+			((String) object).chars().forEach(e -> array.add((char) e));
 			return array;
 		default:
-			array.add(new ArrayItem(object, type));
+			array.add(object);
 			return array;
 		}
 	}
@@ -207,7 +207,7 @@ public final class Function<T> {
 		}
 		switch (type) {
 		case ARRAY:
-			return ((List<ArrayItem>) object).size() != 0;
+			return ((List<Object>) object).size() != 0;
 		case BOOLEAN:
 			return (boolean) object;
 		case CHARACTER:
@@ -234,7 +234,7 @@ public final class Function<T> {
 		}
 		switch (type) {
 		case ARRAY:
-			return BigInteger.valueOf(((List<ArrayItem>) object).size());
+			return BigInteger.valueOf(((List<Object>) object).size());
 		case BOOLEAN:
 			return (boolean) object ? BigInteger.ONE : BigInteger.ZERO;
 		case CHARACTER:
