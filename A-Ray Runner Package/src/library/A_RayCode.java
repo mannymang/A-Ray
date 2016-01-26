@@ -58,8 +58,8 @@ public class A_RayCode {
 				new RunnableFunction<String>() {
 
 					@Override
-					public String run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public String run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						return input.nextCharsUntil(isSeparator);
 					}
@@ -81,8 +81,8 @@ public class A_RayCode {
 				new RunnableFunction<Boolean>() {
 
 					@Override
-					public Boolean run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Boolean run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						char result = input.next();
 						return result != '\0';
@@ -93,8 +93,8 @@ public class A_RayCode {
 				new RunnableFunction<Boolean>() {
 
 					@Override
-					public Boolean run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Boolean run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						String result = input.nextCharsUntil(isSeparator
 								.negate());
@@ -106,8 +106,8 @@ public class A_RayCode {
 				new RunnableFunction<Boolean>() {
 
 					@Override
-					public Boolean run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Boolean run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args)
 									throws LoopFlag {
 						output.append(Function.toString(args[0]));
@@ -141,8 +141,8 @@ public class A_RayCode {
 				new RunnableFunction<String>() {
 
 					@Override
-					public String run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public String run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						return input.nextChars(input.getNumRemaining());
 					}
@@ -163,9 +163,8 @@ public class A_RayCode {
 					}
 
 				}));
-		functions.put("a", new Function<List<Object>>(new Type[] {
-				Type.ARRAY, Type.OBJECT },
-				new RunnableFunction<List<Object>>() {
+		functions.put("a", new Function<List<Object>>(new Type[] { Type.ARRAY,
+				Type.OBJECT }, new RunnableFunction<List<Object>>() {
 
 					@Override
 					public List<Object> run(List<Object> memory,
@@ -177,8 +176,8 @@ public class A_RayCode {
 					}
 
 				}));
-		functions.put("A", new Function<List<Object>>(new Type[] {
-				Type.ARRAY, Type.OBJECT, Type.INTEGER },
+		functions.put("A", new Function<List<Object>>(new Type[] { Type.ARRAY,
+				Type.OBJECT, Type.INTEGER },
 				new RunnableFunction<List<Object>>() {
 
 					@Override
@@ -186,7 +185,7 @@ public class A_RayCode {
 							InputIterator input, StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						List<Object> result = Function.toArray(args[0]);
-						result.add(((BigInteger) args[2]).intValue(),args[1]);
+						result.add(((BigInteger) args[2]).intValue(), args[1]);
 						return result;
 					}
 
@@ -195,8 +194,8 @@ public class A_RayCode {
 				Type.INTEGER }, new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args)
 									throws LoopFlag {
 						List<Object> result = Function.toArray(args[0]);
@@ -209,8 +208,8 @@ public class A_RayCode {
 				Type.INTEGER, Type.OBJECT }, new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args)
 									throws LoopFlag {
 						List<Object> result = Function.toArray(args[0]);
@@ -223,8 +222,8 @@ public class A_RayCode {
 				new RunnableFunction<Boolean>() {
 
 					@Override
-					public Boolean run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Boolean run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						boolean result = false;
 						LoopCode code = new LoopCode(((A_RayCode) args[0]).code,
@@ -248,8 +247,8 @@ public class A_RayCode {
 				Type.FUNCTION }, new RunnableFunction<Boolean>() {
 
 					@Override
-					public Boolean run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Boolean run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						boolean result = false;
 						IteratorCode code = new IteratorCode(Function.toArray(
@@ -275,8 +274,8 @@ public class A_RayCode {
 				new RunnableFunction<Boolean>() {
 
 					@Override
-					public Boolean run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Boolean run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args)
 									throws LoopFlag {
 						boolean result = Function.toBoolean(args[0]);
@@ -310,8 +309,8 @@ public class A_RayCode {
 					}
 
 				}));
-		functions.put("E", new Function<List<Object>>(new Type[] {
-				Type.ARRAY }, new RunnableFunction<List<Object>>() {
+		functions.put("E", new Function<List<Object>>(new Type[] { Type.ARRAY },
+				new RunnableFunction<List<Object>>() {
 
 					@Override
 					public List<Object> run(List<Object> memory,
@@ -340,8 +339,8 @@ public class A_RayCode {
 				new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						return temporaryVariable.getValue();
 					}
@@ -351,8 +350,8 @@ public class A_RayCode {
 				new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						Object result = temporaryVariable.getValue();
 						temporaryVariable.setValue(args[0]);
@@ -360,9 +359,8 @@ public class A_RayCode {
 					}
 
 				}));
-		functions.put(":", new Function<List<Object>>(new Type[] {
-				Type.ARRAY, Type.INTEGER },
-				new RunnableFunction<List<Object>>() {
+		functions.put(":", new Function<List<Object>>(new Type[] { Type.ARRAY,
+				Type.INTEGER }, new RunnableFunction<List<Object>>() {
 
 					@Override
 					public List<Object> run(List<Object> memory,
@@ -377,12 +375,10 @@ public class A_RayCode {
 					}
 
 					private void getAllPerms(List<Object> array,
-							List<Object> fullList,
-							List<Object> currentList, int requiredLength,
-							int currentLength, int index) {
+							List<Object> fullList, List<Object> currentList,
+							int requiredLength, int currentLength, int index) {
 						if (requiredLength == currentLength) {
-							fullList.add(new ArrayList<>(
-									currentList));
+							fullList.add(new ArrayList<>(currentList));
 							currentList.remove(currentLength - 1);
 							return;
 						}
@@ -399,7 +395,7 @@ public class A_RayCode {
 					}
 
 				}));
-		
+
 		final Comparator<Object> comparator = new Comparator<Object>() {
 
 			@Override
@@ -411,15 +407,15 @@ public class A_RayCode {
 					return 0;
 				}
 			}
-			
+
 		};
-		
+
 		functions.put("m", new Function<Object>(new Type[] { Type.ARRAY },
 				new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						List<Object> array = Function.toArray(args[0]);
 						return Collections.min(array, comparator);
@@ -430,8 +426,8 @@ public class A_RayCode {
 				new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						List<Object> array = Function.toArray(args[0]);
 						return Collections.max(array, comparator);
@@ -442,8 +438,8 @@ public class A_RayCode {
 				new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args)
 									throws LoopFlag {
 						throw new LoopFlag(Action.BREAK);
@@ -454,8 +450,8 @@ public class A_RayCode {
 				new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args)
 									throws LoopFlag {
 						throw new LoopFlag(Action.CONTINUE);
@@ -466,8 +462,8 @@ public class A_RayCode {
 				Type.STRING }, new RunnableFunction<Boolean>() {
 
 					@Override
-					public Boolean run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Boolean run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args)
 									throws LoopFlag {
 						return Function.toString(args[1]).matches(Function
@@ -493,9 +489,8 @@ public class A_RayCode {
 					}
 
 				}));
-		functions.put("U", new Function<List<Object>>(new Type[] {
-				Type.INTEGER, Type.INTEGER },
-				new RunnableFunction<List<Object>>() {
+		functions.put("U", new Function<List<Object>>(new Type[] { Type.INTEGER,
+				Type.INTEGER }, new RunnableFunction<List<Object>>() {
 
 					@Override
 					public List<Object> run(List<Object> memory,
@@ -637,8 +632,8 @@ public class A_RayCode {
 				Type.OBJECT }, new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args)
 									throws LoopFlag {
 						Type type1 = Type.getMatch(args[0]);
@@ -685,8 +680,8 @@ public class A_RayCode {
 				Type.OBJECT }, new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args)
 									throws LoopFlag {
 						Type type1 = Type.getMatch(args[0]);
@@ -729,8 +724,8 @@ public class A_RayCode {
 				Type.OBJECT }, new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						Type type1 = Type.getMatch(args[0]);
 						Type type2 = Type.getMatch(args[1]);
@@ -759,8 +754,8 @@ public class A_RayCode {
 				Type.OBJECT }, new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						Type type1 = Type.getMatch(args[0]);
 						Type type2 = Type.getMatch(args[1]);
@@ -789,8 +784,8 @@ public class A_RayCode {
 				Type.OBJECT }, new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						Type type1 = Type.getMatch(args[0]);
 						Type type2 = Type.getMatch(args[1]);
@@ -818,8 +813,8 @@ public class A_RayCode {
 				Type.OBJECT }, new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						Type type1 = Type.getMatch(args[0]);
 						Type type2 = Type.getMatch(args[1]);
@@ -847,8 +842,8 @@ public class A_RayCode {
 				Type.OBJECT }, new RunnableFunction<Boolean>() {
 
 					@Override
-					public Boolean run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Boolean run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args) {
 						Type type1 = Type.getMatch(args[0]);
 						Type type2 = Type.getMatch(args[1]);
@@ -871,8 +866,8 @@ public class A_RayCode {
 				Type.OBJECT }, new RunnableFunction<Boolean>() {
 
 					@Override
-					public Boolean run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Boolean run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args)
 									throws LoopFlag {
 						return Function.compare(args[0], args[1]) < 0;
@@ -883,8 +878,8 @@ public class A_RayCode {
 				Type.OBJECT }, new RunnableFunction<Boolean>() {
 
 					@Override
-					public Boolean run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Boolean run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args)
 									throws LoopFlag {
 						return Function.compare(args[0], args[1]) > 0;
@@ -895,8 +890,8 @@ public class A_RayCode {
 				Type.OBJECT }, new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args)
 									throws LoopFlag {
 						Type type1 = Type.getMatch(args[0]);
@@ -914,8 +909,8 @@ public class A_RayCode {
 				Type.OBJECT }, new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args)
 									throws LoopFlag {
 						Type type1 = Type.getMatch(args[0]);
@@ -933,8 +928,8 @@ public class A_RayCode {
 				new RunnableFunction<Object>() {
 
 					@Override
-					public Object run(List<Object> memory,
-							InputIterator input, StringBuilder output,
+					public Object run(List<Object> memory, InputIterator input,
+							StringBuilder output,
 							MutableObject temporaryVariable, Object[] args)
 									throws LoopFlag {
 						Type type1 = Type.getMatch(args[0]);
@@ -960,10 +955,9 @@ public class A_RayCode {
 				new StringBuilder(), new MutableObject(null));
 	}
 
-	protected A_RayCode(String code, List<Object> memory,
-			InputIterator input, StringBuilder output,
-			MutableObject temporaryVariable) {
-		this.code = code.replaceAll(",", "}{");
+	protected A_RayCode(String code, List<Object> memory, InputIterator input,
+			StringBuilder output, MutableObject temporaryVariable) {
+		this.code = code;
 		this.input = input;
 		this.output = output;
 		this.memory = memory;
@@ -1035,10 +1029,12 @@ public class A_RayCode {
 			functions.put(functionName, function);
 			return new FunctionResult(function.run(memory, input, output,
 					temporaryVariable, new Object[] {}), endIndex + 1);
+		case ',':
 		case '{':
-			return new FunctionResult(new A_RayCode(code.substring(++index,
-					endIndex = indexOfMatchingClose(index - 1, '}')), memory,
-					input, output, temporaryVariable), endIndex + 1);
+			return new FunctionResult(new A_RayCode(code.substring(index + 1,
+					endIndex = indexOfMatchingCloseBrace(index++)), memory,
+					input, output, temporaryVariable), endIndex + (code.charAt(
+							endIndex) == ',' ? 0 : 1));
 		case '"':
 			endIndex = code.indexOf('"', ++index);
 			return new FunctionResult(code.substring(index, endIndex), endIndex
@@ -1071,11 +1067,11 @@ public class A_RayCode {
 	}
 
 	private List<Object> createNewArray(String substring) throws LoopFlag {
-		String[] array = substring.split("\\}\\{");
+		String[] array = substring.split(",");
 		List<Object> result = new ArrayList<>();
 		for (String string : array) {
-			result.add(new A_RayCode(string, memory, input,
-					output, temporaryVariable).run().result);
+			result.add(new A_RayCode(string, memory, input, output,
+					temporaryVariable).run().result);
 		}
 		return result;
 	}
@@ -1093,6 +1089,11 @@ public class A_RayCode {
 			}
 		}
 		return -1; // TODO error
+	}
+
+	private int indexOfMatchingCloseBrace(int index) {
+		return Math.min(indexOfMatchingClose(index, ','), indexOfMatchingClose(
+				index, '}'));
 	}
 
 	protected static class FunctionResult {
