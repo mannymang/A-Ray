@@ -287,12 +287,12 @@ public class A_RayCode {
 					}
 
 				}));
-		functions.put("?", new Function<Boolean>(new Type[] { Type.BOOLEAN,
+		functions.put("?", new Function<Object>(new Type[] { Type.BOOLEAN,
 				Type.FUNCTION, Type.FUNCTION },
-				new RunnableFunction<Boolean>() {
+				new RunnableFunction<Object>() {
 
 					@Override
-					public Boolean run(List<Object> memory, InputIterator input,
+					public Object run(List<Object> memory, InputIterator input,
 							StringBuilder output,
 							MutableObject temporaryVariable,
 							Map<String, Object> variables, Object[] args)
@@ -300,8 +300,7 @@ public class A_RayCode {
 						boolean result = Function.toBoolean(args[0]);
 						A_RayCode code = (A_RayCode) (result ? args[1]
 								: args[2]);
-						code.run();
-						return result;
+						return code.run().result;
 					}
 
 				}));
@@ -1046,7 +1045,8 @@ public class A_RayCode {
 		memory.clear();
 
 		try {
-			run();
+			Object result = run().result;
+			output.append(result == null ? "" : result);
 		} catch (LoopFlag e) {
 			return "Loop flag not resolved\n";
 		}
